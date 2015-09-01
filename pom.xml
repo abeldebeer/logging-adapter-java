@@ -58,6 +58,15 @@
         <tag>HEAD</tag>
     </scm>
 
+    <!-- Distribution -->
+    <distributionManagement>
+        <repository>
+            <id>bintray</id>
+            <name>cookingfox/logging-adapter-java</name>
+            <url>https://api.bintray.com/maven/cookingfox/maven/logging-adapter-java</url>
+        </repository>
+    </distributionManagement>
+
     <!-- Properties -->
     <properties>
         <!-- Project settings -->
@@ -136,6 +145,8 @@
     <!-- Dependencies -->
     <dependencies>
 
+        <!-- Provided dependencies -->
+
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -149,6 +160,8 @@
             <version>4.1.1.4</version>
             <scope>provided</scope>
         </dependency>
+
+        <!-- Test dependencies -->
 
         <dependency>
             <groupId>junit</groupId>
