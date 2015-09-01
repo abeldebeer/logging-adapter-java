@@ -1,11 +1,11 @@
-package com.cookingfox.logging;
+package com.cookingfox.logging.adapter;
 
 /**
  * Created by Abel de Beer <abel@cookingfox.nl> on 31/08/15.
  */
 public class SysOutAdapter implements Adapter {
 
-    enum Level {
+    private enum Level {
         VERBOSE(2, "V"),
         DEBUG(3, "D"),
         INFO(4, "I"),
@@ -21,42 +21,36 @@ public class SysOutAdapter implements Adapter {
         }
     }
 
-    private final String caller;
-
-    public SysOutAdapter(String caller) {
-        this.caller = caller;
+    @Override
+    public void debug(String caller, String message) {
+        log(Level.DEBUG, caller, message);
     }
 
     @Override
-    public void debug(String message) {
-        log(Level.DEBUG, message);
+    public void error(String caller, String message) {
+        log(Level.ERROR, caller, message);
     }
 
     @Override
-    public void error(String message) {
-        log(Level.ERROR, message);
+    public void info(String caller, String message) {
+        log(Level.INFO, caller, message);
     }
 
     @Override
-    public void info(String message) {
-        log(Level.INFO, message);
+    public void verbose(String caller, String message) {
+        log(Level.VERBOSE, caller, message);
     }
 
     @Override
-    public void verbose(String message) {
-        log(Level.VERBOSE, message);
-    }
-
-    @Override
-    public void warn(String message) {
-        log(Level.WARN, message);
+    public void warn(String caller, String message) {
+        log(Level.WARN, caller, message);
     }
 
     //----------------------------------------------------------------------------------------------
     // PRIVATE METHODS
     //----------------------------------------------------------------------------------------------
 
-    private void log(Level level, String message) {
+    private void log(Level level, String caller, String message) {
         System.out.println(String.format("%s/%s: %s", level.id, caller, message));
     }
 
