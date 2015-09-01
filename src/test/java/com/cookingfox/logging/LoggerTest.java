@@ -1,6 +1,6 @@
 package com.cookingfox.logging;
 
-import com.cookingfox.logging.fixtures.ListenableCallAdapter;
+import com.cookingfox.logging.fixture.ListenableCallAdapter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +12,7 @@ import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
- * Created by Abel de Beer <abel@cookingfox.nl> on 01/09/15.
+ * JUnit tests for basic Logger functionality.
  */
 public class LoggerTest {
 
@@ -41,12 +41,14 @@ public class LoggerTest {
     }
 
     @Test
-    public void should_not_throw_if_no_adapters() throws Exception {
-        Logger.d("a");
-        Logger.e("b");
-        Logger.i("c");
-        Logger.v("d");
-        Logger.w("e");
+    public void should_not_throw_if_not_initialized() throws Exception {
+        Logger.reset();
+
+        Logger.debug("a");
+        Logger.error("b");
+        Logger.info("c");
+        Logger.verbose("d");
+        Logger.warn("e");
     }
 
     @Test
@@ -60,12 +62,12 @@ public class LoggerTest {
             public void onCall(ListenableCallAdapter.Call call) {
                 called.set(true);
                 assertThat(call.message, equalTo(message));
-                assertThat(call.level, equalTo(ListenableCallAdapter.Call.Level.DEBUG));
+                assertThat(call.level, equalTo(Level.DEBUG));
                 assertThat(call.caller, equalTo(caller));
             }
         }));
 
-        Logger.d(message);
+        Logger.debug(message);
 
         assertThat(called.get(), is(true));
     }
@@ -83,7 +85,7 @@ public class LoggerTest {
             }
         }));
 
-        Logger.d("foo");
+        Logger.debug("foo");
 
         assertThat(called.get(), is(false));
     }
@@ -103,7 +105,7 @@ public class LoggerTest {
             }
         }));
 
-        Logger.d("foo");
+        Logger.debug("foo");
 
         assertThat(called.get(), is(true));
     }
@@ -124,7 +126,7 @@ public class LoggerTest {
             }
         }));
 
-        Logger.d(unformatted, foo, bar);
+        Logger.debug(unformatted, foo, bar);
 
         assertThat(called.get(), is(true));
     }

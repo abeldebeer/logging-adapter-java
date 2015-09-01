@@ -1,11 +1,13 @@
-package com.cookingfox.logging.fixtures;
+package com.cookingfox.logging.fixture;
 
+import com.cookingfox.logging.Level;
 import com.cookingfox.logging.adapter.Adapter;
 
 /**
- * Created by Abel de Beer <abel@cookingfox.nl> on 01/09/15.
+ * Log adapter implementation that uses a listener to inspect the log calls.
  */
 public class ListenableCallAdapter implements Adapter {
+
     private final CallListener listener;
 
     public ListenableCallAdapter(CallListener listener) {
@@ -13,30 +15,26 @@ public class ListenableCallAdapter implements Adapter {
     }
 
     public void debug(String caller, String message) {
-        listener.onCall(new Call(caller, message, Call.Level.DEBUG));
+        listener.onCall(new Call(caller, message, Level.DEBUG));
     }
 
     public void error(String caller, String message) {
-        listener.onCall(new Call(caller, message, Call.Level.ERROR));
+        listener.onCall(new Call(caller, message, Level.ERROR));
     }
 
     public void info(String caller, String message) {
-        listener.onCall(new Call(caller, message, Call.Level.INFO));
+        listener.onCall(new Call(caller, message, Level.INFO));
     }
 
     public void verbose(String caller, String message) {
-        listener.onCall(new Call(caller, message, Call.Level.VERBOSE));
+        listener.onCall(new Call(caller, message, Level.VERBOSE));
     }
 
     public void warn(String caller, String message) {
-        listener.onCall(new Call(caller, message, Call.Level.WARN));
+        listener.onCall(new Call(caller, message, Level.WARN));
     }
 
     public static class Call {
-        public enum Level {
-            DEBUG, ERROR, INFO, VERBOSE, WARN
-        }
-
         public String caller;
         public String message;
         public Level level;
@@ -60,4 +58,5 @@ public class ListenableCallAdapter implements Adapter {
     public interface CallListener {
         void onCall(Call call);
     }
+
 }

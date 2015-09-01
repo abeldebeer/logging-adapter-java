@@ -1,9 +1,14 @@
 package com.cookingfox.logging.adapter;
 
 /**
- * Created by Abel de Beer <abel@cookingfox.nl> on 31/08/15.
+ * Log adapter implementation using Android logging utility.
  */
 public class AndroidAdapter implements Adapter {
+
+    //----------------------------------------------------------------------------------------------
+    // PUBLIC METHODS
+    //----------------------------------------------------------------------------------------------
+
     @Override
     public void debug(String caller, String message) {
         android.util.Log.d(caller, message);
@@ -28,4 +33,5 @@ public class AndroidAdapter implements Adapter {
     public void warn(String caller, String message) {
         android.util.Log.w(caller, message);
     }
+
 }

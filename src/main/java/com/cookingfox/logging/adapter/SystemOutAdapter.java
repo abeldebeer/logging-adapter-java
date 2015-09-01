@@ -1,24 +1,23 @@
 package com.cookingfox.logging.adapter;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.cookingfox.logging.Level;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
- * Log adapter implementation using SLF4J library.
+ * Log adapter implementation using System.out.println.
  */
-public class Slf4jAdapter implements Adapter {
+public class SystemOutAdapter implements Adapter {
 
     //----------------------------------------------------------------------------------------------
     // PRIVATE PROPERTIES
     //----------------------------------------------------------------------------------------------
 
     /**
-     * Collection of loggers, where the key is the caller class name.
+     * Date format to use for log message.
      */
-    private final Map<String, Logger> loggers = new LinkedHashMap<>();
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd HH:mm:ss.SSS");
 
     //----------------------------------------------------------------------------------------------
     // PUBLIC METHODS
@@ -26,27 +25,27 @@ public class Slf4jAdapter implements Adapter {
 
     @Override
     public void debug(String caller, String message) {
-        getLogger(caller).debug(message);
+        log(Level.DEBUG, caller, message);
     }
 
     @Override
     public void error(String caller, String message) {
-        getLogger(caller).error(message);
+        log(Level.ERROR, caller, message);
     }
 
     @Override
     public void info(String caller, String message) {
-        getLogger(caller).info(message);
+        log(Level.INFO, caller, message);
     }
 
     @Override
     public void verbose(String caller, String message) {
-        getLogger(caller).trace(message);
+        log(Level.VERBOSE, caller, message);
     }
 
     @Override
     public void warn(String caller, String message) {
-        getLogger(caller).warn(message);
+        log(Level.WARN, caller, message);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -54,20 +53,19 @@ public class Slf4jAdapter implements Adapter {
     //----------------------------------------------------------------------------------------------
 
     /**
-     * Creates and / or returns an SLF4J Logger instance for the calling class.
+     * Output log message using System.out.println.
      *
-     * @param caller The name of calling class.
-     * @return SLF4J Logger instance.
+     * @param level   The logging level.
+     * @param caller  The calling class name.
+     * @param message The log message.
      */
-    private Logger getLogger(String caller) {
-        Logger logger = loggers.get(caller);
+    private void log(Level level, String caller, String message) {
+        // use first character of level name
+        String levelId = level.toString().substring(0, 1);
 
-        if (null == logger) {
-            logger = LoggerFactory.getLogger(caller);
-            loggers.put(caller, logger);
-        }
-
-        return logger;
+        System.out.println(dateFormat.format(new Date()) + " " +
+                levelId + "/" + caller +
+                "(" + Thread.currentThread().getId() + ") : " + message);
     }
 
 }
