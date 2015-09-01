@@ -23,7 +23,7 @@ public final class Logger {
      * Name of this class, used for filtering the stack trace entries when trying to determine the
      * calling class name.
      *
-     * @see #getCallerClassName()
+     * @see #getCallerStackTrace()
      */
     private static final String LOGGER_CLASS_NAME = Logger.class.getName();
 
@@ -31,7 +31,7 @@ public final class Logger {
      * The stack trace always includes a few entries that are related to the Logger internals, so
      * these can be skipped when trying to determine the calling class name.
      *
-     * @see #getCallerClassName()
+     * @see #getCallerStackTrace()
      */
     private static final int MIN_STACK_OFFSET = 3;
 
@@ -155,59 +155,71 @@ public final class Logger {
             return;
         }
 
-        String caller = getCallerClassName();
-
-        // simple class name: extract class name (strip package)
-        if (settings.useSimpleClassName && caller.contains(".")) {
-            caller = caller.substring(caller.lastIndexOf(".") + 1);
-        }
-
         // arguments have been passed: use in String format
         if (args.length > 0) {
             message = String.format(message, args);
+        }
+
+        StackTraceElement caller = getCallerStackTrace();
+        String callerClassName = LOGGER_CLASS_NAME;
+        String callerMethodName = null;
+
+        if (null != caller) {
+            callerClassName = caller.getClassName();
+            callerMethodName = caller.getMethodName();
+        }
+
+        // simple class name: extract class name (strip package)
+        if (settings.useSimpleClassName && callerClassName.contains(".")) {
+            callerClassName = callerClassName.substring(callerClassName.lastIndexOf(".") + 1);
+        }
+
+        // include caller method name if not null
+        if (settings.includeMethodName && null != callerMethodName) {
+            message = String.format("%s | %s", callerMethodName, message);
         }
 
         // call the log method corresponding to the level
         for (Adapter adapter : settings.adapters) {
             switch (level) {
                 case DEBUG:
-                    adapter.debug(caller, message);
+                    adapter.debug(callerClassName, message);
                     break;
                 case ERROR:
-                    adapter.error(caller, message);
+                    adapter.error(callerClassName, message);
                     break;
                 case INFO:
-                    adapter.info(caller, message);
+                    adapter.info(callerClassName, message);
                     break;
                 case VERBOSE:
-                    adapter.verbose(caller, message);
+                    adapter.verbose(callerClassName, message);
                     break;
                 case WARN:
-                    adapter.warn(caller, message);
+                    adapter.warn(callerClassName, message);
                     break;
             }
         }
     }
 
     /**
-     * Returns the name of the calling class by analyzing the stack trace. If somehow it cannot be
-     * detected, this method will return the name of this Logger class.
+     * Finds the caller in the stack trace.
+     *
+     * @return The stack trace element of the caller.
      */
-    private String getCallerClassName() {
+    private StackTraceElement getCallerStackTrace() {
         StackTraceElement[] stack = Thread.currentThread().getStackTrace();
 
         // the first few entries of the stack trace are always related to the Logger process, so try
-        // to find the first entry that does is not the Logger.
+        // to find the first entry that is not the Logger.
         for (int i = MIN_STACK_OFFSET; i < stack.length - MIN_STACK_OFFSET; i++) {
-            String className = stack[i].getClassName();
+            StackTraceElement trace = stack[i];
 
-            if (!className.equals(LOGGER_CLASS_NAME)) {
-                return className;
+            if (!trace.getClassName().equals(LOGGER_CLASS_NAME)) {
+                return trace;
             }
         }
 
-        // default to logger class name
-        return LOGGER_CLASS_NAME;
+        return null;
     }
 
 }

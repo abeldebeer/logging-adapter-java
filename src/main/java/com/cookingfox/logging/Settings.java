@@ -24,6 +24,11 @@ public class Settings {
     boolean enabled;
 
     /**
+     * Whether the calling method name should be included in the log message.
+     */
+    boolean includeMethodName;
+
+    /**
      * Whether a simple class name should be used for the caller.
      */
     boolean useSimpleClassName;
@@ -50,6 +55,17 @@ public class Settings {
      */
     public Settings addAdapter(Adapter adapter) {
         adapters.add(adapter);
+        return this;
+    }
+
+    /**
+     * Enable to include the caller method name in the log message.
+     *
+     * @param includeMethodName Whether the calling method name should be included in the message.
+     * @return The current Settings instance, so method calls are chainable.
+     */
+    public Settings includeMethodName(boolean includeMethodName) {
+        this.includeMethodName = includeMethodName;
         return this;
     }
 

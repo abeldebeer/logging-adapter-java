@@ -91,7 +91,7 @@ public class LoggerTest {
     }
 
     @Test
-    public void should_use_simple_class_name_when_set() throws Exception {
+    public void should_use_simple_class_name_if_configured() throws Exception {
         settings.useSimpleClassName(true);
 
         final String caller = getClass().getSimpleName();
@@ -127,6 +127,26 @@ public class LoggerTest {
         }));
 
         Logger.debug(unformatted, foo, bar);
+
+        assertThat(called.get(), is(true));
+    }
+
+    @Test
+    public void should_include_method_name_if_configured() throws Exception {
+        settings.includeMethodName(true);
+
+        final AtomicBoolean called = new AtomicBoolean(false);
+        final String methodName = "should_include_method_name_if_configured";
+
+        settings.addAdapter(new ListenableCallAdapter(new ListenableCallAdapter.CallListener() {
+            @Override
+            public void onCall(ListenableCallAdapter.Call call) {
+                called.set(true);
+                assertThat(call.message, containsString(methodName));
+            }
+        }));
+
+        Logger.debug("foo");
 
         assertThat(called.get(), is(true));
     }
