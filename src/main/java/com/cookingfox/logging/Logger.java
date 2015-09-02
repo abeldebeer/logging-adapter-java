@@ -150,15 +150,14 @@ public final class Logger {
     // PRIVATE METHODS
     //----------------------------------------------------------------------------------------------
 
-    private Entry createLoggerEntry(String message, Object[] args) {
-        LoggerEntry entry = new LoggerEntry(message, args);
-        entry.defaultCaller = LOGGER_CLASS_NAME;
-        entry.settings = settings;
-        entry.stackTrace = getCallerStackTrace();
-
-        return entry;
-    }
-
+    /**
+     * Output the log message.
+     *
+     * @param level   The logging level.
+     * @param message The message to log.
+     * @param args    Values that need to be included in the log message
+     *                (through {@link String#format(String, Object...)}).
+     */
     private void log(Level level, String message, Object... args) {
         // disabled or no adapter: skip
         if (!settings.enabled || settings.loggerAdapters.isEmpty()) {
@@ -187,6 +186,22 @@ public final class Logger {
                     break;
             }
         }
+    }
+
+    /**
+     * Create an Entry object using the logging parameters.
+     *
+     * @param message The message to log.
+     * @param args    Values that need to be included in the log message
+     *                (through {@link String#format(String, Object...)}).
+     */
+    private Entry createLoggerEntry(String message, Object[] args) {
+        LoggerEntry entry = new LoggerEntry(message, args);
+        entry.defaultCallerClassName = LOGGER_CLASS_NAME;
+        entry.settings = settings;
+        entry.stackTrace = getCallerStackTrace();
+
+        return entry;
     }
 
     /**
