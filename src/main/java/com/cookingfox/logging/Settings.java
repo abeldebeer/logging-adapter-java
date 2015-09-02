@@ -1,6 +1,6 @@
 package com.cookingfox.logging;
 
-import com.cookingfox.logging.adapter.Adapter;
+import com.cookingfox.logging.api.LoggerAdapter;
 
 import java.util.LinkedHashSet;
 
@@ -16,7 +16,7 @@ public class Settings {
     /**
      * Collection of log adapter instances.
      */
-    final LinkedHashSet<Adapter> adapters;
+    final LinkedHashSet<LoggerAdapter> loggerAdapters;
 
     /**
      * Whether logging is enabled.
@@ -38,7 +38,7 @@ public class Settings {
     //----------------------------------------------------------------------------------------------
 
     Settings() {
-        adapters = new LinkedHashSet<>();
+        loggerAdapters = new LinkedHashSet<>();
         enabled = true;
         useSimpleClassName = false;
     }
@@ -50,11 +50,11 @@ public class Settings {
     /**
      * Add a log Adapter instance.
      *
-     * @param adapter The adapter to add.
+     * @param loggerAdapter The adapter to add.
      * @return The current Settings instance, so method calls are chainable.
      */
-    public Settings addAdapter(Adapter adapter) {
-        adapters.add(adapter);
+    public Settings addAdapter(LoggerAdapter loggerAdapter) {
+        loggerAdapters.add(loggerAdapter);
         return this;
     }
 

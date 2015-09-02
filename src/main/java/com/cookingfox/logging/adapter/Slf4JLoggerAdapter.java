@@ -1,5 +1,7 @@
 package com.cookingfox.logging.adapter;
 
+import com.cookingfox.logging.api.Entry;
+import com.cookingfox.logging.api.LoggerAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -9,7 +11,7 @@ import java.util.Map;
 /**
  * Log adapter implementation using SLF4J library.
  */
-public class Slf4jAdapter implements Adapter {
+public class Slf4JLoggerAdapter implements LoggerAdapter {
 
     //----------------------------------------------------------------------------------------------
     // PRIVATE PROPERTIES
@@ -25,28 +27,28 @@ public class Slf4jAdapter implements Adapter {
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public void debug(String caller, String message) {
-        getLogger(caller).debug(message);
+    public void debug(Entry entry) {
+        getLogger(entry.getCaller()).debug(entry.getMessage());
     }
 
     @Override
-    public void error(String caller, String message) {
-        getLogger(caller).error(message);
+    public void error(Entry entry) {
+        getLogger(entry.getCaller()).error(entry.getMessage());
     }
 
     @Override
-    public void info(String caller, String message) {
-        getLogger(caller).info(message);
+    public void info(Entry entry) {
+        getLogger(entry.getCaller()).info(entry.getMessage());
     }
 
     @Override
-    public void verbose(String caller, String message) {
-        getLogger(caller).trace(message);
+    public void verbose(Entry entry) {
+        getLogger(entry.getCaller()).trace(entry.getMessage());
     }
 
     @Override
-    public void warn(String caller, String message) {
-        getLogger(caller).warn(message);
+    public void warn(Entry entry) {
+        getLogger(entry.getCaller()).warn(entry.getMessage());
     }
 
     //----------------------------------------------------------------------------------------------

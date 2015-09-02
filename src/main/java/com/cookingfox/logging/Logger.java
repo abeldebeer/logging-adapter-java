@@ -1,6 +1,7 @@
 package com.cookingfox.logging;
 
-import com.cookingfox.logging.adapter.Adapter;
+import com.cookingfox.logging.api.Entry;
+import com.cookingfox.logging.api.LoggerAdapter;
 
 /**
  * Helper class for logging. Use {@link #init()} to initialize and configure the Logger. Use the
@@ -149,53 +150,40 @@ public final class Logger {
     // PRIVATE METHODS
     //----------------------------------------------------------------------------------------------
 
+    private Entry createLoggerEntry(String message, Object[] args) {
+        LoggerEntry entry = new LoggerEntry(message, args);
+        entry.defaultCaller = LOGGER_CLASS_NAME;
+        entry.settings = settings;
+        entry.stackTrace = getCallerStackTrace();
+
+        return entry;
+    }
+
     private void log(Level level, String message, Object... args) {
         // disabled or no adapter: skip
-        if (!settings.enabled || settings.adapters.isEmpty()) {
+        if (!settings.enabled || settings.loggerAdapters.isEmpty()) {
             return;
         }
 
-        // arguments have been passed: use in String format
-        if (args.length > 0) {
-            message = String.format(message, args);
-        }
-
-        StackTraceElement caller = getCallerStackTrace();
-        String callerClassName = LOGGER_CLASS_NAME;
-        String callerMethodName = null;
-
-        if (null != caller) {
-            callerClassName = caller.getClassName();
-            callerMethodName = caller.getMethodName();
-        }
-
-        // simple class name: extract class name (strip package)
-        if (settings.useSimpleClassName && callerClassName.contains(".")) {
-            callerClassName = callerClassName.substring(callerClassName.lastIndexOf(".") + 1);
-        }
-
-        // include caller method name if not null
-        if (settings.includeMethodName && null != callerMethodName) {
-            message = String.format("%s | %s", callerMethodName, message);
-        }
+        Entry entry = createLoggerEntry(message, args);
 
         // call the log method corresponding to the level
-        for (Adapter adapter : settings.adapters) {
+        for (LoggerAdapter loggerAdapter : settings.loggerAdapters) {
             switch (level) {
                 case DEBUG:
-                    adapter.debug(callerClassName, message);
+                    loggerAdapter.debug(entry);
                     break;
                 case ERROR:
-                    adapter.error(callerClassName, message);
+                    loggerAdapter.error(entry);
                     break;
                 case INFO:
-                    adapter.info(callerClassName, message);
+                    loggerAdapter.info(entry);
                     break;
                 case VERBOSE:
-                    adapter.verbose(callerClassName, message);
+                    loggerAdapter.verbose(entry);
                     break;
                 case WARN:
-                    adapter.warn(callerClassName, message);
+                    loggerAdapter.warn(entry);
                     break;
             }
         }

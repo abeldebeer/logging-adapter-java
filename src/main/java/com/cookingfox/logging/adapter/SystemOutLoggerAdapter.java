@@ -1,6 +1,8 @@
 package com.cookingfox.logging.adapter;
 
 import com.cookingfox.logging.Level;
+import com.cookingfox.logging.api.Entry;
+import com.cookingfox.logging.api.LoggerAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -8,7 +10,7 @@ import java.util.Date;
 /**
  * Log adapter implementation using System.out.println.
  */
-public class SystemOutAdapter implements Adapter {
+public class SystemOutLoggerAdapter implements LoggerAdapter {
 
     //----------------------------------------------------------------------------------------------
     // PRIVATE PROPERTIES
@@ -24,28 +26,28 @@ public class SystemOutAdapter implements Adapter {
     //----------------------------------------------------------------------------------------------
 
     @Override
-    public void debug(String caller, String message) {
-        log(Level.DEBUG, caller, message);
+    public void debug(Entry entry) {
+        log(Level.DEBUG, entry);
     }
 
     @Override
-    public void error(String caller, String message) {
-        log(Level.ERROR, caller, message);
+    public void error(Entry entry) {
+        log(Level.ERROR, entry);
     }
 
     @Override
-    public void info(String caller, String message) {
-        log(Level.INFO, caller, message);
+    public void info(Entry entry) {
+        log(Level.INFO, entry);
     }
 
     @Override
-    public void verbose(String caller, String message) {
-        log(Level.VERBOSE, caller, message);
+    public void verbose(Entry entry) {
+        log(Level.VERBOSE, entry);
     }
 
     @Override
-    public void warn(String caller, String message) {
-        log(Level.WARN, caller, message);
+    public void warn(Entry entry) {
+        log(Level.WARN, entry);
     }
 
     //----------------------------------------------------------------------------------------------
@@ -55,17 +57,16 @@ public class SystemOutAdapter implements Adapter {
     /**
      * Output log message using System.out.println.
      *
-     * @param level   The logging level.
-     * @param caller  The calling class name.
-     * @param message The log message.
+     * @param level The logging level.
+     * @param entry The log entry.
      */
-    private void log(Level level, String caller, String message) {
+    private void log(Level level, Entry entry) {
         // use first character of level name
         String levelId = level.toString().substring(0, 1);
 
         System.out.println(dateFormat.format(new Date()) + " " +
-                levelId + "/" + caller +
-                "(" + Thread.currentThread().getId() + ") : " + message);
+                levelId + "/" + entry.getCaller() +
+                "(" + Thread.currentThread().getId() + ") : " + entry.getMessage());
     }
 
 }

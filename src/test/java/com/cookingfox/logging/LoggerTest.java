@@ -1,6 +1,7 @@
 package com.cookingfox.logging;
 
-import com.cookingfox.logging.fixture.ListenableCallAdapter;
+import com.cookingfox.logging.api.Entry;
+import com.cookingfox.logging.fixture.ListenableCallLoggerAdapter;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -57,13 +58,13 @@ public class LoggerTest {
         final String caller = getClass().getName();
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addAdapter(new ListenableCallAdapter(new ListenableCallAdapter.CallListener() {
+        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
-            public void onCall(ListenableCallAdapter.Call call) {
+            public void onCall(Entry entry, Level level) {
                 called.set(true);
-                assertThat(call.message, equalTo(message));
-                assertThat(call.level, equalTo(Level.DEBUG));
-                assertThat(call.caller, equalTo(caller));
+                assertThat(entry.getMessage(), equalTo(message));
+                assertThat(level, equalTo(Level.DEBUG));
+                assertThat(entry.getCaller(), equalTo(caller));
             }
         }));
 
@@ -78,9 +79,9 @@ public class LoggerTest {
 
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addAdapter(new ListenableCallAdapter(new ListenableCallAdapter.CallListener() {
+        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
-            public void onCall(ListenableCallAdapter.Call call) {
+            public void onCall(Entry entry, Level level) {
                 called.set(true);
             }
         }));
@@ -97,11 +98,11 @@ public class LoggerTest {
         final String caller = getClass().getSimpleName();
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addAdapter(new ListenableCallAdapter(new ListenableCallAdapter.CallListener() {
+        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
-            public void onCall(ListenableCallAdapter.Call call) {
+            public void onCall(Entry entry, Level level) {
                 called.set(true);
-                assertThat(call.caller, equalTo(caller));
+                assertThat(entry.getCaller(), equalTo(caller));
             }
         }));
 
@@ -118,11 +119,11 @@ public class LoggerTest {
         final String formatted = String.format(unformatted, foo, bar);
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addAdapter(new ListenableCallAdapter(new ListenableCallAdapter.CallListener() {
+        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
-            public void onCall(ListenableCallAdapter.Call call) {
+            public void onCall(Entry entry, Level level) {
                 called.set(true);
-                assertThat(call.message, equalTo(formatted));
+                assertThat(entry.getMessage(), equalTo(formatted));
             }
         }));
 
@@ -138,11 +139,11 @@ public class LoggerTest {
         final AtomicBoolean called = new AtomicBoolean(false);
         final String methodName = "should_include_method_name_if_configured";
 
-        settings.addAdapter(new ListenableCallAdapter(new ListenableCallAdapter.CallListener() {
+        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
-            public void onCall(ListenableCallAdapter.Call call) {
+            public void onCall(Entry entry, Level level) {
                 called.set(true);
-                assertThat(call.message, containsString(methodName));
+                assertThat(entry.getMessage(), containsString(methodName));
             }
         }));
 
