@@ -64,9 +64,8 @@ public class SystemOutLoggerAdapter implements LoggerAdapter {
         // use first character of level name
         String levelId = level.toString().substring(0, 1);
 
-        System.out.println(dateFormat.format(new Date()) + " " +
-                levelId + "/" + entry.getCaller() +
-                "(" + Thread.currentThread().getId() + ") : " + entry.getMessage());
+        System.out.println(dateFormat.format(new Date()) + " " + levelId + "/" +
+                entry.getCaller() + " : " + entry.getMessage());
     }
 
 }
