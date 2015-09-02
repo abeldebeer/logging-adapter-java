@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.lang.reflect.Constructor;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.jcabi.matchers.RegexMatchers.containsPattern;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -58,7 +59,7 @@ public class LoggerTest {
         final String caller = getClass().getName();
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -79,7 +80,7 @@ public class LoggerTest {
 
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -92,26 +93,6 @@ public class LoggerTest {
     }
 
     @Test
-    public void should_use_simple_class_name_if_configured() throws Exception {
-        settings.useSimpleClassName(true);
-
-        final String caller = getClass().getSimpleName();
-        final AtomicBoolean called = new AtomicBoolean(false);
-
-        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
-            @Override
-            public void onCall(Entry entry, Level level) {
-                called.set(true);
-                assertThat(entry.getCaller(), equalTo(caller));
-            }
-        }));
-
-        Logger.debug("foo");
-
-        assertThat(called.get(), is(true));
-    }
-
-    @Test
     public void should_format_string_using_arguments() throws Exception {
         final String foo = "foo";
         final int bar = 123;
@@ -119,7 +100,7 @@ public class LoggerTest {
         final String formatted = String.format(unformatted, foo, bar);
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -133,17 +114,78 @@ public class LoggerTest {
     }
 
     @Test
-    public void should_include_method_name_if_configured() throws Exception {
-        settings.includeMethodName(true);
+    public void should_use_simple_name_for_class_caller() throws Exception {
+        settings.classCallerUseSimpleName(true);
 
+        final String caller = getClass().getSimpleName();
         final AtomicBoolean called = new AtomicBoolean(false);
-        final String methodName = "should_include_method_name_if_configured";
 
-        settings.addAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
-                assertThat(entry.getMessage(), containsString(methodName));
+                assertThat(entry.getCaller(), equalTo(caller));
+            }
+        }));
+
+        Logger.debug("foo");
+
+        assertThat(called.get(), is(true));
+    }
+
+    @Test
+    public void should_add_method_name_for_class_caller() throws Exception {
+        settings.classCallerAddMethodName(true);
+
+        final String method = "should_add_method_name_for_class_caller";
+        final AtomicBoolean called = new AtomicBoolean(false);
+
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+            @Override
+            public void onCall(Entry entry, Level level) {
+                called.set(true);
+                assertThat(entry.getCaller(), containsString(method));
+            }
+        }));
+
+        Logger.debug("foo");
+
+        assertThat(called.get(), is(true));
+    }
+
+    @Test
+    public void should_use_file_name_for_file_caller() throws Exception {
+        settings.useFileCaller(true);
+
+        final String className = getClass().getSimpleName();
+        final AtomicBoolean called = new AtomicBoolean(false);
+
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+            @Override
+            public void onCall(Entry entry, Level level) {
+                called.set(true);
+                assertThat(entry.getCaller(), containsString(className + ".java"));
+            }
+        }));
+
+        Logger.debug("foo");
+
+        assertThat(called.get(), is(true));
+    }
+
+    @Test
+    public void should_add_line_number_for_file_caller() throws Exception {
+        settings.useFileCaller(true);
+        settings.fileCallerAddLineNumber(true);
+
+        final String className = getClass().getSimpleName();
+        final AtomicBoolean called = new AtomicBoolean(false);
+
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+            @Override
+            public void onCall(Entry entry, Level level) {
+                called.set(true);
+                assertThat(entry.getCaller(), containsPattern(className + ".java" + ":\\d+"));
             }
         }));
 

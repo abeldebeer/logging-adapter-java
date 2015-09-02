@@ -24,14 +24,32 @@ public class LoggerEntry implements Entry {
             return defaultCaller;
         }
 
-        String caller = stackTrace.getClassName();
+        StringBuilder callerBuilder = new StringBuilder();
 
-        // simple class name: extract class name (strip package)
-        if (settings.useSimpleClassName && caller.contains(".")) {
-            caller = caller.substring(caller.lastIndexOf(".") + 1);
+        if (settings.useFileCaller) {
+            callerBuilder.append(stackTrace.getFileName());
+
+            if (settings.fileCallerAddLineNumber) {
+                callerBuilder.append(':');
+                callerBuilder.append(stackTrace.getLineNumber());
+            }
+        } else {
+            String callerClassName = stackTrace.getClassName();
+
+            // simple class name: extract class name (strip package)
+            if (settings.classCallerUseSimpleName && callerClassName.contains(".")) {
+                callerClassName = callerClassName.substring(callerClassName.lastIndexOf(".") + 1);
+            }
+
+            callerBuilder.append(callerClassName);
+
+            if (settings.classCallerAddMethodName) {
+                callerBuilder.append('#');
+                callerBuilder.append(stackTrace.getMethodName());
+            }
         }
 
-        return caller;
+        return callerBuilder.toString();
     }
 
     @Override
@@ -41,11 +59,6 @@ public class LoggerEntry implements Entry {
         // arguments have been passed: use in String format
         if (messageArgs.length > 0) {
             logMessage = String.format(logMessage, messageArgs);
-        }
-
-        // include caller method name if stack trace is valid
-        if (null != stackTrace && settings.includeMethodName) {
-            logMessage = String.format("%s | %s", stackTrace.getMethodName(), logMessage);
         }
 
         return logMessage;

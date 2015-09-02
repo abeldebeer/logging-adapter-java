@@ -14,24 +14,28 @@ public class Settings {
     //----------------------------------------------------------------------------------------------
 
     /**
-     * Collection of log adapter instances.
+     * Whether the caller method name should be added for the "class caller".
      */
-    final LinkedHashSet<LoggerAdapter> loggerAdapters;
+    boolean classCallerAddMethodName;
+
+    /**
+     * Whether a simple class name should be used for the caller.
+     */
+    boolean classCallerUseSimpleName;
 
     /**
      * Whether logging is enabled.
      */
     boolean enabled;
 
-    /**
-     * Whether the calling method name should be included in the log message.
-     */
-    boolean includeMethodName;
+    boolean fileCallerAddLineNumber;
 
     /**
-     * Whether a simple class name should be used for the caller.
+     * Collection of LoggerAdapter instances.
      */
-    boolean useSimpleClassName;
+    final LinkedHashSet<LoggerAdapter> loggerAdapters;
+
+    boolean useFileCaller;
 
     //----------------------------------------------------------------------------------------------
     // CONSTRUCTOR
@@ -39,8 +43,11 @@ public class Settings {
 
     Settings() {
         loggerAdapters = new LinkedHashSet<>();
+        classCallerUseSimpleName = false;
+        classCallerAddMethodName = false;
         enabled = true;
-        useSimpleClassName = false;
+        fileCallerAddLineNumber = true;
+        useFileCaller = false;
     }
 
     //----------------------------------------------------------------------------------------------
@@ -48,24 +55,28 @@ public class Settings {
     //----------------------------------------------------------------------------------------------
 
     /**
-     * Add a log Adapter instance.
+     * Add a LoggerAdapter instance.
      *
-     * @param loggerAdapter The adapter to add.
+     * @param loggerAdapter The LoggerAdapter to add.
      * @return The current Settings instance, so method calls are chainable.
      */
-    public Settings addAdapter(LoggerAdapter loggerAdapter) {
+    public Settings addLoggerAdapter(LoggerAdapter loggerAdapter) {
         loggerAdapters.add(loggerAdapter);
         return this;
     }
 
-    /**
-     * Enable to include the caller method name in the log message.
-     *
-     * @param includeMethodName Whether the calling method name should be included in the message.
-     * @return The current Settings instance, so method calls are chainable.
-     */
-    public Settings includeMethodName(boolean includeMethodName) {
-        this.includeMethodName = includeMethodName;
+    public Settings classCallerAddMethodName(boolean classCallerAddMethodName) {
+        this.classCallerAddMethodName = classCallerAddMethodName;
+        return this;
+    }
+
+    public Settings classCallerUseSimpleName(boolean classCallerUseSimpleName) {
+        this.classCallerUseSimpleName = classCallerUseSimpleName;
+        return this;
+    }
+
+    public Settings fileCallerAddLineNumber(boolean fileCallerAddLineNumber) {
+        this.fileCallerAddLineNumber = fileCallerAddLineNumber;
         return this;
     }
 
@@ -80,14 +91,8 @@ public class Settings {
         return this;
     }
 
-    /**
-     * Enable to use a simple caller class name in the log messages. Default: false.
-     *
-     * @param useSimpleClassName Whether to use a simple class name for the caller.
-     * @return The current Settings instance, so method calls are chainable.
-     */
-    public Settings useSimpleClassName(boolean useSimpleClassName) {
-        this.useSimpleClassName = useSimpleClassName;
+    public Settings useFileCaller(boolean useFileCaller) {
+        this.useFileCaller = useFileCaller;
         return this;
     }
 
