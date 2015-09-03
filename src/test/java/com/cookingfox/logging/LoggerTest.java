@@ -114,8 +114,8 @@ public class LoggerTest {
     }
 
     @Test
-    public void should_use_simple_name_for_class_caller() throws Exception {
-        settings.classCallerUseSimpleName(true);
+    public void should_use_caller_simple_name() throws Exception {
+        settings.callerUseSimpleName(true);
 
         final String caller = getClass().getSimpleName();
         final AtomicBoolean called = new AtomicBoolean(false);
@@ -134,10 +134,10 @@ public class LoggerTest {
     }
 
     @Test
-    public void should_add_method_name_for_class_caller() throws Exception {
-        settings.classCallerAddMethodName(true);
+    public void should_add_caller_method_name() throws Exception {
+        settings.callerAddMethodName(true);
 
-        final String method = "should_add_method_name_for_class_caller";
+        final String method = "should_add_caller_method_name";
         final AtomicBoolean called = new AtomicBoolean(false);
 
         settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
@@ -154,8 +154,8 @@ public class LoggerTest {
     }
 
     @Test
-    public void should_use_file_name_for_file_caller() throws Exception {
-        settings.useFileCaller(true);
+    public void should_add_caller_line_number() throws Exception {
+        settings.callerAddLineNumber(true);
 
         final String className = getClass().getSimpleName();
         final AtomicBoolean called = new AtomicBoolean(false);
@@ -164,28 +164,7 @@ public class LoggerTest {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
-                assertThat(entry.getCaller(), containsString(className + ".java"));
-            }
-        }));
-
-        Logger.debug("foo");
-
-        assertThat(called.get(), is(true));
-    }
-
-    @Test
-    public void should_add_line_number_for_file_caller() throws Exception {
-        settings.useFileCaller(true);
-        settings.fileCallerAddLineNumber(true);
-
-        final String className = getClass().getSimpleName();
-        final AtomicBoolean called = new AtomicBoolean(false);
-
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
-            @Override
-            public void onCall(Entry entry, Level level) {
-                called.set(true);
-                assertThat(entry.getCaller(), containsPattern(className + ".java" + ":\\d+"));
+                assertThat(entry.getCaller(), containsPattern(className + ":\\d+"));
             }
         }));
 

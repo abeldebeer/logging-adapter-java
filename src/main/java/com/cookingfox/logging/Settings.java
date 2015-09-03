@@ -14,14 +14,19 @@ public class Settings {
     //----------------------------------------------------------------------------------------------
 
     /**
-     * Whether the caller method name should be added for the "class caller".
+     * Whether the caller line number should be added.
      */
-    boolean classCallerAddMethodName;
+    boolean callerAddLineNumber;
 
     /**
-     * Whether a simple class name should be used for the "class caller".
+     * Whether the caller method name should be added.
      */
-    boolean classCallerUseSimpleName;
+    boolean callerAddMethodName;
+
+    /**
+     * Whether a simple class name (without package) should be used.
+     */
+    boolean callerUseSimpleName;
 
     /**
      * Whether logging is enabled.
@@ -29,31 +34,20 @@ public class Settings {
     boolean enabled;
 
     /**
-     * Whether the caller line number should be added for the "file caller".
-     */
-    boolean fileCallerAddLineNumber;
-
-    /**
      * Collection of LoggerAdapter instances.
      */
     final LinkedHashSet<LoggerAdapter> loggerAdapters;
-
-    /**
-     * Whether the "file caller" should be used.
-     */
-    boolean useFileCaller;
 
     //----------------------------------------------------------------------------------------------
     // CONSTRUCTOR
     //----------------------------------------------------------------------------------------------
 
     Settings() {
-        loggerAdapters = new LinkedHashSet<>();
-        classCallerUseSimpleName = false;
-        classCallerAddMethodName = false;
+        callerAddLineNumber = false;
+        callerAddMethodName = false;
+        callerUseSimpleName = false;
         enabled = true;
-        fileCallerAddLineNumber = true;
-        useFileCaller = false;
+        loggerAdapters = new LinkedHashSet<>();
     }
 
     //----------------------------------------------------------------------------------------------
@@ -72,35 +66,35 @@ public class Settings {
     }
 
     /**
-     * Pass `true` to add the caller method name for the "class caller". Default: false.
-     *
-     * @param value Whether the caller method name should be added.
-     * @return The current Settings instance, so method calls are chainable.
-     */
-    public Settings classCallerAddMethodName(boolean value) {
-        classCallerAddMethodName = value;
-        return this;
-    }
-
-    /**
-     * Pass `true` to use a simple class name for the "class caller". Default: false.
-     *
-     * @param value Whether a simple class name should be used.
-     * @return The current Settings instance, so method calls are chainable.
-     */
-    public Settings classCallerUseSimpleName(boolean value) {
-        classCallerUseSimpleName = value;
-        return this;
-    }
-
-    /**
-     * Pass `true` to add the caller line number for the "file caller". Default: true.
+     * Pass `true` to add the caller line number. Default: false.
      *
      * @param value Whether the caller line number should be added.
      * @return The current Settings instance, so method calls are chainable.
      */
-    public Settings fileCallerAddLineNumber(boolean value) {
-        fileCallerAddLineNumber = value;
+    public Settings callerAddLineNumber(boolean value) {
+        callerAddLineNumber = value;
+        return this;
+    }
+
+    /**
+     * Pass `true` to add the caller method name. Default: false.
+     *
+     * @param value Whether the caller method name should be added.
+     * @return The current Settings instance, so method calls are chainable.
+     */
+    public Settings callerAddMethodName(boolean value) {
+        callerAddMethodName = value;
+        return this;
+    }
+
+    /**
+     * Pass `true` to use a simple class name (without package) for the caller. Default: false.
+     *
+     * @param value Whether a simple class name should be used.
+     * @return The current Settings instance, so method calls are chainable.
+     */
+    public Settings callerUseSimpleName(boolean value) {
+        callerUseSimpleName = value;
         return this;
     }
 
@@ -112,17 +106,6 @@ public class Settings {
      */
     public Settings setEnabled(boolean value) {
         enabled = value;
-        return this;
-    }
-
-    /**
-     * Pass `true` to use the "file caller" mode. Default: false.
-     *
-     * @param value Whether "file caller" mode should be used.
-     * @return The current Settings instance, so method calls are chainable.
-     */
-    public Settings useFileCaller(boolean value) {
-        useFileCaller = value;
         return this;
     }
 

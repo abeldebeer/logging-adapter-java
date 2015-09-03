@@ -60,42 +60,32 @@ public class LoggerEntry implements Entry {
 
     @Override
     public String getCaller() {
-        StringBuilder callerBuilder = new StringBuilder();
-
         // no stack trace? use default caller class name
         if (null == stackTrace) {
-            callerBuilder.append(defaultCallerClassName);
-
-            if (settings.useFileCaller) {
-                callerBuilder.append(".java");
-            }
-
-            return callerBuilder.toString();
+            return defaultCallerClassName;
         }
 
-        if (settings.useFileCaller) {
-            callerBuilder.append(stackTrace.getFileName());
+        StringBuilder callerBuilder = new StringBuilder();
+        String callerClassName = stackTrace.getClassName();
 
-            // add caller line number
-            if (settings.fileCallerAddLineNumber) {
-                callerBuilder.append(':');
-                callerBuilder.append(stackTrace.getLineNumber());
-            }
-        } else {
-            String callerClassName = stackTrace.getClassName();
+        // simple class name: extract class name (strip package)
+        if (settings.callerUseSimpleName && callerClassName.contains(".")) {
+            callerClassName = callerClassName.substring(callerClassName.lastIndexOf(".") + 1);
+        }
 
-            // simple class name: extract class name (strip package)
-            if (settings.classCallerUseSimpleName && callerClassName.contains(".")) {
-                callerClassName = callerClassName.substring(callerClassName.lastIndexOf(".") + 1);
-            }
+        // add class name
+        callerBuilder.append(callerClassName);
 
-            callerBuilder.append(callerClassName);
+        // add method name
+        if (settings.callerAddMethodName) {
+            callerBuilder.append('#');
+            callerBuilder.append(stackTrace.getMethodName());
+        }
 
-            // add method name
-            if (settings.classCallerAddMethodName) {
-                callerBuilder.append('#');
-                callerBuilder.append(stackTrace.getMethodName());
-            }
+        // add caller line number
+        if (settings.callerAddLineNumber) {
+            callerBuilder.append(':');
+            callerBuilder.append(stackTrace.getLineNumber());
         }
 
         return callerBuilder.toString();
