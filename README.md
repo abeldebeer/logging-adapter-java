@@ -4,6 +4,12 @@ Adapters for various Java and Android logging implementations.
 
 [![Build Status](https://travis-ci.org/cookingfox/logging-adapter-java.svg?branch=master)](https://travis-ci.org/cookingfox/logging-adapter-java)
 
+## Features
+
+- Contains adapters for popular logging libraries. (i.e. Android `Log`, SLF4J)
+- Easy to implement your own adapter through a simple interface.
+- Simple log method calls: no need to define a `TAG` (Android) or create a logger per class (SLF4J).
+
 ## Download
 
 [![Download](https://api.bintray.com/packages/cookingfox/maven/logging-adapter-java/images/download.svg)](https://bintray.com/cookingfox/maven/logging-adapter-java/_latestVersion)
@@ -51,4 +57,14 @@ and add the project declaration to your `pom.xml`:
     <artifactId>logging-adapter-java</artifactId>
     <version>0.2.2</version>
 </dependency>
+```
+
+## Usage
+
+Example using Android adapter:
+
+```java
+Logger.init().addLoggerAdapter(new AndroidLoggerAdapter());
+
+Logger.debug("Created a user: %s", user);
 ```
