@@ -44,7 +44,7 @@ public final class Logger {
      * Creates and / or returns the singleton Logger instance.
      */
     static Logger getInstance() {
-        return INSTANCE == null ? INSTANCE = new Logger() : INSTANCE;
+        return null == INSTANCE ? INSTANCE = new Logger() : INSTANCE;
     }
 
     /**
@@ -196,6 +196,13 @@ public final class Logger {
      *                (through {@link String#format(String, Object...)}).
      */
     private Entry createLoggerEntry(String message, Object[] args) {
+        String logMessage = message;
+
+        // message is null: change to empty string
+        if (null == message) {
+            message = "";
+        }
+
         LoggerEntry entry = new LoggerEntry(message, args);
         entry.defaultCallerClassName = LOGGER_CLASS_NAME;
         entry.settings = settings;

@@ -173,4 +173,22 @@ public class LoggerTest {
         assertThat(called.get(), is(true));
     }
 
+    @Test
+    public void should_not_throw_when_message_null() throws Exception {
+        final AtomicBoolean called = new AtomicBoolean(false);
+
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+            @Override
+            public void onCall(Entry entry, Level level) {
+                called.set(true);
+                entry.getMessage();
+            }
+        }));
+
+        Logger.debug(null);
+        Logger.debug(null, 123, "foo");
+
+        assertThat(called.get(), is(true));
+    }
+
 }
