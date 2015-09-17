@@ -5,7 +5,7 @@
     <!-- Package info -->
     <groupId>com.cookingfox</groupId>
     <artifactId>logging-adapter-java</artifactId>
-    <version>0.3.1</version>
+    <version>0.3.2-SNAPSHOT</version>
     <name>Logging Adapters for Java</name>
     <description>Adapters for various Java and Android logging implementations</description>
     <url>http://github.com/cookingfox/logging-adapter-java</url>
@@ -53,7 +53,7 @@
         <developerConnection>
             scm:git:ssh://git@github.com/cookingfox/logging-adapter-java.git
         </developerConnection>
-        <tag>v0.3.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <!-- Distribution -->
