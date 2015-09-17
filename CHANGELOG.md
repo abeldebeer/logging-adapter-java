@@ -1,5 +1,10 @@
 # Logging Adapters for Java: Change Log
 
+## [0.3.1](../../tree/v0.3.1) (2015-09-17)
+
+- Fixes weird formatting in Android logcat when message is empty.
+- Fixes exception when message is null.
+
 ## [0.3.0](../../tree/v0.3.0) (2015-09-03)
 
 - Simplifies caller options.
