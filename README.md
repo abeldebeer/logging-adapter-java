@@ -112,5 +112,5 @@ Set to `true` to add the caller method name, for example: `com.example.MyClass#m
 
 ### callerUseSimpleName()
 
-Set to `true` to use a simple class name for the caller for example: `MyClass`.
+Set to `true` to use a simple class name for the caller, for example: `MyClass`.
 

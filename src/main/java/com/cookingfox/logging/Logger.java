@@ -69,6 +69,25 @@ public final class Logger {
     /**
      * Log a message at debug level.
      *
+     * @see Level#DEBUG
+     */
+    public static void debug() {
+        getInstance().log(Level.DEBUG, "");
+    }
+
+    /**
+     * Log a message at debug level.
+     *
+     * @param value The message to log.
+     * @see Level#DEBUG
+     */
+    public static void debug(Object value) {
+        getInstance().log(Level.DEBUG, "%s", value);
+    }
+
+    /**
+     * Log a message at debug level.
+     *
      * @param message The message to log.
      * @param args    Values that need to be included in the log message
      *                (through {@link String#format(String, Object...)}).
@@ -76,6 +95,25 @@ public final class Logger {
      */
     public static void debug(String message, Object... args) {
         getInstance().log(Level.DEBUG, message, args);
+    }
+
+    /**
+     * Log a message at error level.
+     *
+     * @see Level#ERROR
+     */
+    public static void error() {
+        getInstance().log(Level.ERROR, "");
+    }
+
+    /**
+     * Log a message at error level.
+     *
+     * @param value The message to log.
+     * @see Level#ERROR
+     */
+    public static void error(Object value) {
+        getInstance().log(Level.ERROR, "%s", value);
     }
 
     /**
@@ -93,6 +131,25 @@ public final class Logger {
     /**
      * Log a message at info level.
      *
+     * @see Level#INFO
+     */
+    public static void info() {
+        getInstance().log(Level.INFO, "");
+    }
+
+    /**
+     * Log a message at info level.
+     *
+     * @param value The message to log.
+     * @see Level#INFO
+     */
+    public static void info(Object value) {
+        getInstance().log(Level.INFO, "%s", value);
+    }
+
+    /**
+     * Log a message at info level.
+     *
      * @param message The message to log.
      * @param args    Values that need to be included in the log message
      *                (through {@link String#format(String, Object...)}).
@@ -100,6 +157,25 @@ public final class Logger {
      */
     public static void info(String message, Object... args) {
         getInstance().log(Level.INFO, message, args);
+    }
+
+    /**
+     * Log a message at verbose level.
+     *
+     * @see Level#VERBOSE
+     */
+    public static void verbose() {
+        getInstance().log(Level.VERBOSE, "");
+    }
+
+    /**
+     * Log a message at verbose level.
+     *
+     * @param value The message to log.
+     * @see Level#VERBOSE
+     */
+    public static void verbose(Object value) {
+        getInstance().log(Level.VERBOSE, "%s", value);
     }
 
     /**
@@ -115,7 +191,26 @@ public final class Logger {
     }
 
     /**
-     * Log a message at warning level.
+     * Log a message at warn level.
+     *
+     * @see Level#WARN
+     */
+    public static void warn() {
+        getInstance().log(Level.WARN, "");
+    }
+
+    /**
+     * Log a message at warn level.
+     *
+     * @param value The message to log.
+     * @see Level#WARN
+     */
+    public static void warn(Object value) {
+        getInstance().log(Level.WARN, "%s", value);
+    }
+
+    /**
+     * Log a message at warn level.
      *
      * @param message The message to log.
      * @param args    Values that need to be included in the log message

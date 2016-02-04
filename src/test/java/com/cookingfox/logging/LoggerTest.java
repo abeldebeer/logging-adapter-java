@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.jcabi.matchers.RegexMatchers.containsPattern;
@@ -187,6 +189,42 @@ public class LoggerTest {
 
         Logger.debug(null);
         Logger.debug(null, 123, "foo");
+
+        assertThat(called.get(), is(true));
+    }
+
+    @Test
+    public void should_output_object_toString() throws Exception {
+        final AtomicBoolean called = new AtomicBoolean(false);
+        final List<String> strings = Arrays.asList("a", "b", "c");
+        final String toString = strings.toString();
+
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+            @Override
+            public void onCall(Entry entry, Level level) {
+                called.set(true);
+
+                assertThat(entry.getMessage(), equalTo(toString));
+            }
+        }));
+
+        Logger.debug(strings);
+
+        assertThat(called.get(), is(true));
+    }
+
+    @Test
+    public void should_not_throw_when_no_args() throws Exception {
+        final AtomicBoolean called = new AtomicBoolean(false);
+
+        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+            @Override
+            public void onCall(Entry entry, Level level) {
+                called.set(true);
+            }
+        }));
+
+        Logger.debug();
 
         assertThat(called.get(), is(true));
     }

@@ -2,6 +2,7 @@ package com.cookingfox.logging;
 
 import com.cookingfox.logging.api.Entry;
 
+import java.util.Arrays;
 import java.util.Locale;
 
 /**
@@ -101,6 +102,12 @@ public class LoggerEntry implements Entry {
         }
 
         return logMessage;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s{message='%s', messageArgs=%s}", getClass().getSimpleName(),
+                message, Arrays.toString(messageArgs));
     }
 
 }
