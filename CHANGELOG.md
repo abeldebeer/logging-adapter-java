@@ -1,5 +1,10 @@
 # Logging Adapters for Java: Change Log
 
+## [0.3.2](../../tree/v0.3.2) (2016-02-04)
+
+- Adds support for empty log, e.g.: `Logger.debug()`
+- Adds support for Object (non-String) log, e.g.: `Logger.debug(myObject)`
+
 ## [0.3.1](../../tree/v0.3.1) (2015-09-17)
 
 - Fixes weird formatting in Android logcat when message is empty.
