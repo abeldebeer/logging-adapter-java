@@ -60,7 +60,7 @@ public class SystemOutLoggerAdapter implements LoggerAdapter {
      * @param level The logging level.
      * @param entry The log entry.
      */
-    private void log(Level level, Entry entry) {
+    protected void log(Level level, Entry entry) {
         // use first character of level name
         String levelId = level.toString().substring(0, 1);
 
