@@ -64,7 +64,7 @@ and add the project declaration to your `pom.xml`:
 Example using Android adapter:
 
 ```java
-Logger.init().addLoggerAdapter(new AndroidLoggerAdapter());
+Logger.init().setLoggerAdapter(new AndroidLoggerAdapter());
 
 Logger.debug("Created a user: %s", user);
 ```
@@ -92,10 +92,10 @@ name. For the above example, this would be: `com.example.MyClass`.
 To configure the Logger, you call `Logger.init()`, which returns a Settings object. This class
 provides the following options:
 
-### addLoggerAdapter()
+### setLoggerAdapter()
 
-Adds a `LoggerAdapter` instance, which typically wraps a third party logging library. Of course, you 
-can always create your own implementation. It is possible to add multiple logger adapters.
+Sets the `LoggerAdapter` instance, which typically wraps a third party logging library. Of course, 
+you can always create your own implementation. It is not possible to set multiple logger adapters.
 
 ### setEnabled()
 
@@ -114,3 +114,6 @@ Set to `true` to add the caller method name, for example: `com.example.MyClass#m
 
 Set to `true` to use a simple class name for the caller, for example: `MyClass`.
 
+### Example output when all caller options are set to 'true'
+
+`MyClass#myMethod:7`
