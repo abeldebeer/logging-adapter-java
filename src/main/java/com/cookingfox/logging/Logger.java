@@ -1,5 +1,6 @@
 package com.cookingfox.logging;
 
+import com.cookingfox.logging.adapter.SystemOutLoggerAdapter;
 import com.cookingfox.logging.api.Entry;
 import com.cookingfox.logging.api.LoggerAdapter;
 
@@ -64,6 +65,25 @@ public final class Logger {
      */
     public static Settings init() {
         return getInstance().settings;
+    }
+
+    /**
+     * Initializes the Logger with default settings that are useful for unit tests:
+     * - callerAddLineNumber(true)
+     * - callerAddMethodName(true)
+     * - callerUseSimpleName(true)
+     * - setEnabled(true);
+     * - setLoggerAdapter(new SystemOutLoggerAdapter())
+     *
+     * @see #init()
+     */
+    public static Settings initTest() {
+        return init()
+                .callerAddLineNumber(true)
+                .callerAddMethodName(true)
+                .callerUseSimpleName(true)
+                .setEnabled(true)
+                .setLoggerAdapter(new SystemOutLoggerAdapter());
     }
 
     /**
