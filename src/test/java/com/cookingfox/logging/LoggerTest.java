@@ -61,7 +61,7 @@ public class LoggerTest {
         final String caller = getClass().getName();
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.setLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -82,7 +82,7 @@ public class LoggerTest {
 
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.setLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -102,7 +102,7 @@ public class LoggerTest {
         final String formatted = String.format(unformatted, foo, bar);
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.setLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -122,7 +122,7 @@ public class LoggerTest {
         final String caller = getClass().getSimpleName();
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.setLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -142,7 +142,7 @@ public class LoggerTest {
         final String method = "should_add_caller_method_name";
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.setLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -162,7 +162,7 @@ public class LoggerTest {
         final String className = getClass().getSimpleName();
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.setLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -179,7 +179,7 @@ public class LoggerTest {
     public void should_not_throw_when_message_null() throws Exception {
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.setLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -199,7 +199,7 @@ public class LoggerTest {
         final List<String> strings = Arrays.asList("a", "b", "c");
         final String toString = strings.toString();
 
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.setLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);
@@ -217,7 +217,7 @@ public class LoggerTest {
     public void should_not_throw_when_no_args() throws Exception {
         final AtomicBoolean called = new AtomicBoolean(false);
 
-        settings.addLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
+        settings.setLoggerAdapter(new ListenableCallLoggerAdapter(new ListenableCallLoggerAdapter.CallListener() {
             @Override
             public void onCall(Entry entry, Level level) {
                 called.set(true);

@@ -254,32 +254,32 @@ public final class Logger {
      *                (through {@link String#format(String, Object...)}).
      */
     private void log(Level level, String message, Object... args) {
+        final LoggerAdapter loggerAdapter = settings.loggerAdapter;
+
         // disabled or no adapter: skip
-        if (!settings.enabled || settings.loggerAdapters.isEmpty()) {
+        if (!settings.enabled || loggerAdapter == null) {
             return;
         }
 
-        Entry entry = createLoggerEntry(message, args);
+        final Entry entry = createLoggerEntry(message, args);
 
         // call the log method corresponding to the level
-        for (LoggerAdapter loggerAdapter : settings.loggerAdapters) {
-            switch (level) {
-                case DEBUG:
-                    loggerAdapter.debug(entry);
-                    break;
-                case ERROR:
-                    loggerAdapter.error(entry);
-                    break;
-                case INFO:
-                    loggerAdapter.info(entry);
-                    break;
-                case VERBOSE:
-                    loggerAdapter.verbose(entry);
-                    break;
-                case WARN:
-                    loggerAdapter.warn(entry);
-                    break;
-            }
+        switch (level) {
+            case DEBUG:
+                loggerAdapter.debug(entry);
+                break;
+            case ERROR:
+                loggerAdapter.error(entry);
+                break;
+            case INFO:
+                loggerAdapter.info(entry);
+                break;
+            case VERBOSE:
+                loggerAdapter.verbose(entry);
+                break;
+            case WARN:
+                loggerAdapter.warn(entry);
+                break;
         }
     }
 
@@ -291,8 +291,6 @@ public final class Logger {
      *                (through {@link String#format(String, Object...)}).
      */
     private Entry createLoggerEntry(String message, Object[] args) {
-        String logMessage = message;
-
         // message is null: change to empty string
         if (null == message) {
             message = "";
