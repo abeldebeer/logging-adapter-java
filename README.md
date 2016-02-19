@@ -32,7 +32,7 @@ and add the project to the `dependencies` block in your `build.gradle`:
 
 ```groovy
 dependencies {
-    compile 'com.cookingfox:logging-adapter-java:0.3.2'
+    compile 'com.cookingfox:logging-adapter-java:0.4.0'
 }
 ```
 
@@ -55,7 +55,7 @@ and add the project declaration to your `pom.xml`:
 <dependency>
     <groupId>com.cookingfox</groupId>
     <artifactId>logging-adapter-java</artifactId>
-    <version>0.3.2</version>
+    <version>0.4.0</version>
 </dependency>
 ```
 

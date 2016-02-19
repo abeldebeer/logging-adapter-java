@@ -1,5 +1,9 @@
 # Logging Adapters for Java: Change Log
 
+## [0.4.0](../../tree/v0.4.0) (2016-02-19)
+
+- Removes support for multiple logger adapters: use `Settings.setLoggerAdapter(adapter)`.
+
 ## [0.3.2](../../tree/v0.3.2) (2016-02-04)
 
 - Adds support for empty log, e.g.: `Logger.debug()`

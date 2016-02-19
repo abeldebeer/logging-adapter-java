@@ -52,17 +52,6 @@ public class Settings {
     //----------------------------------------------------------------------------------------------
 
     /**
-     * Add a LoggerAdapter instance.
-     *
-     * @param loggerAdapter The LoggerAdapter to add.
-     * @return The current Settings instance, so method calls are chainable.
-     */
-    public Settings setLoggerAdapter(LoggerAdapter loggerAdapter) {
-        this.loggerAdapter = loggerAdapter;
-        return this;
-    }
-
-    /**
      * Pass `true` to add the caller line number. Default: false.
      *
      * @param value Whether the caller line number should be added.
@@ -103,6 +92,17 @@ public class Settings {
      */
     public Settings setEnabled(boolean value) {
         enabled = value;
+        return this;
+    }
+
+    /**
+     * Add a LoggerAdapter instance.
+     *
+     * @param loggerAdapter The LoggerAdapter to add.
+     * @return The current Settings instance, so method calls are chainable.
+     */
+    public Settings setLoggerAdapter(LoggerAdapter loggerAdapter) {
+        this.loggerAdapter = loggerAdapter;
         return this;
     }
 
